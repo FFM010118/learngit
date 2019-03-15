@@ -11,7 +11,7 @@ class StuView(APIView):
             return Response(ser.data)
         elif kwargs['pk']:
             aa = Stuendt.objects.filter(pk=kwargs['pk'])
-            ser = StuSer(instance=aa, many=True)
+            ser = StuSer(instance=aa, many=True,context={'request': request})
             return Response(ser.data)
     def post(self,request):
         ser = StuSer(data=request.data)
@@ -21,6 +21,9 @@ class StuView(APIView):
             return Response(ser.validated_data)
         else:
             return Response(ser.errors)
+    def delete(self,request,pk):
+        Stuendt.objects.get(pk = pk).delete()
+        return Response('删除成功')
 class ClsView(APIView):
     def get(self, request, **kwargs):
         if kwargs['pk']:
