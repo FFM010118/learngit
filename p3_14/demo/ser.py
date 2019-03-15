@@ -8,6 +8,12 @@ class StuSer(serializers.Serializer):
     def create(self, validated_data):
         a = Stuendt.objects.create(**validated_data)
         return a
+    def update(self, instance, validated_data):
+        instance.stu_name = validated_data.get('stu_name',instance.stu_name)
+        instance.code = validated_data.get('code',instance.code)
+        instance.cls_id = validated_data.get('cls_id', instance.cls_id)
+        instance.save()
+        return instance
 class ClsSer(serializers.ModelSerializer):
     class Meta:
         model = Cls

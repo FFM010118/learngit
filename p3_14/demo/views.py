@@ -24,6 +24,17 @@ class StuView(APIView):
     def delete(self,request,pk):
         Stuendt.objects.get(pk = pk).delete()
         return Response('删除成功')
+    def put(self,request,pk):
+        try:
+            stu_obj = Stuendt.objects.get(pk=pk)
+            ser = StuSer(data=request.data,instance=stu_obj)
+            if ser.is_valid():
+                ser.save()
+                return Response(ser.validated_data)
+            else:
+                return Response(ser.errors)
+        except Exception as e:
+            return Response(e)
 class ClsView(APIView):
     def get(self, request, **kwargs):
         if kwargs['pk']:
